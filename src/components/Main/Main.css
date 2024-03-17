@@ -88,11 +88,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 10px; /* Giảm khoảng cách giữa các thành phần */
     background-color: #f0f4f0;
     padding: 10px 20px;
     border-radius: 50px;
 }
+
 .search-box img {
     width: 24px;
     cursor: pointer;
@@ -173,8 +174,25 @@
         background-position: 800px 0;
     }
 }
+
 .result-data p {
     font-size: 17px;
     font-weight: 300px;
     line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+    .main-bottom input {
+        width: 120px; /* Giảm chiều rộng của trường nhập liệu */
+    }
+    .main-bottom img {
+        width: 18px; /* Giảm kích thước của biểu tượng */
+    }
+    .search-box {
+        margin-top: 20px; /* Giảm khoảng cách giữa trường nhập liệu và các biểu tượng */
+        padding: 5px 10px;
+    }
+    .search-box div {
+        gap: 5px; /* Giảm khoảng cách giữa các biểu tượng */
+    }
 }
