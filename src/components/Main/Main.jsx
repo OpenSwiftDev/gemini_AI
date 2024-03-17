@@ -2,8 +2,14 @@ import React, { useContext } from 'react'
 import './Main.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/Context'
-
+import toast from 'react-hot-toast'
 const Main = () => {
+    const sendPrompt = async () => {
+        setInput('');
+        toast.success('Prompt sent', { duration: 3000 });
+        await onSent();
+        
+    }
 
     const { onSent, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
 
@@ -70,11 +76,11 @@ const Main = () => {
                 <div className="main-bottom">
                     <div className='search-box'>
 
-                        <input onChange={(e) => setInput(e.target.value)} type="text" placeholder='Enter a prompt here' />
+                        <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Enter a prompt here' />
                         <div>
                             <img src={assets.gallery_icon} alt="" />
                             <img src={assets.mic_icon} alt="" />
-                            <img onClick={() => onSent()} src={assets.send_icon} alt="" />
+                            <img onClick={sendPrompt} src={assets.send_icon} alt="" />
                         </div>
                     </div>
 
