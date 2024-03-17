@@ -2,8 +2,25 @@ import React, { useContext } from 'react'
 import './Main.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/Context'
-
+import toast from 'react-hot-toast'
 const Main = () => {
+    const sendPrompt = async () => {
+    
+        if (input.trim() === '') {
+            toast.error('Please enter a prompt', { duration: 3000 });
+            return;
+        }
+        setInput('');
+        toast.success('Prompt sent', { duration: 3000 });
+        await onSent();
+
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          sendPrompt();
+        }
+      };
 
     const { onSent, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
 
@@ -11,7 +28,7 @@ const Main = () => {
         <div className='main'>
             <div className='nav'>
                 <p>Gemini</p>
-                <img src={assets.user_icon} alt="" />
+                <img src={assets.dev} alt="" />
 
             </div>
 
@@ -48,7 +65,7 @@ const Main = () => {
                     </div>
                 </> : <div className='result'>
                     <div className='result-title'>
-                        <img src={assets.user_icon} alt="" />
+                        <img src={assets.dev} alt="" />
                         <p> {recentPrompt} </p>
                     </div>
                     <div className='result-data'>
@@ -70,11 +87,11 @@ const Main = () => {
                 <div className="main-bottom">
                     <div className='search-box'>
 
-                        <input onChange={(e) => setInput(e.target.value)} type="text" placeholder='Enter a prompt here' />
+                        <input onKeyDown={handleKeyDown} onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Enter a prompt here' />
                         <div>
                             <img src={assets.gallery_icon} alt="" />
                             <img src={assets.mic_icon} alt="" />
-                            <img onClick={() => onSent()} src={assets.send_icon} alt="" />
+                            <img onClick={sendPrompt} src={assets.send_icon} alt="" />
                         </div>
                     </div>
 
