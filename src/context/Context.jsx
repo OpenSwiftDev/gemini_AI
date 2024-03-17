@@ -1,5 +1,8 @@
-import { createContext, useState } from "react"
+import { createContext, useState, useEffect } from "react"
 import runChat from "../config/gemini";
+import toast from 'react-hot-toast';
+import Markdown from 'markdown-to-jsx';
+import ReactDOMServer from 'react-dom/server';
 
 export const Context = createContext();
 
@@ -12,49 +15,45 @@ const ContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
 
-    const delayPara = (index, nextWord) => {
-        setTimeout(() => {
-            setResultData((prev) => prev + nextWord);
-        }, 80 * index + Math.random() * 50); // randomizes the delays between 80 to 130 milliseconds
-    }
-    
-
     const onSent = async (prompt) => {
-        setResultData("")
-        setLoading(true)
-        setShowResult(true)
+        setResultData("");
+        setLoading(true);
+        setShowResult(true);
         let response;
-        if(prompt !== undefined){
-            response = await runChat(prompt)
-            setRecentPrompt(prompt)
-        }
-        else {
-            setPrevPrompt(prev => [...prev, input])
-            setRecentPrompt(input)
-            response = await runChat(input)
-        }
-        let responseArray = response.split("**");
-        let newRespone;
-        for(let i = 0; i < responseArray.length; i++){
-            if(i === 0 || i % 2 !== 1){
-                newRespone += responseArray[i]
-            }else {
-                newRespone += "<b>" + responseArray[i] + "</b>"
+        try {
+            if (prompt !== undefined) {
+                response = await runChat(prompt);
+                setRecentPrompt(prompt);
+            } else {
+                setPrevPrompt(prev => [...prev, input]);
+                setRecentPrompt(input);
+                response = await runChat(input);
             }
-        }
 
-        let newRespone2 = newRespone.split("*").join("</br>")
-        let newResponeArray = newRespone2.split(" ");
+            const htmlResponse = ReactDOMServer.renderToString(<Markdown>{response}</Markdown>);
 
-        
-        for (let i = 0; i < newResponeArray.length; i++) {
-            const nextWord = newResponeArray[i];
-            delayPara(i, nextWord + " ");
+            const words = htmlResponse.split(' ');
+
+            let typedText = '';
+
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                setTimeout(() => {
+
+                    typedText += word + ' ';
+                    setResultData(typedText);
+                }, 80 * i);
+            }
+
+            setLoading(false);
+            setInput("");
+        } catch (error) {
+            toast.error('Yêu cầu của bạn vi phạm chính sách của chúng tôi!', { duration: 5000 });
+            setLoading(false);
+            setInput("");
         }
-        setResultData(newRespone2)
-        setLoading(false)
-        setInput("")
     }
+
 
     const contextValue = {
         prevPrompt,
