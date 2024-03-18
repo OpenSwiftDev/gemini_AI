@@ -126,6 +126,11 @@
     overflow-y: scroll;
 }
 
+.previous-prompts{
+    padding: 0px 5%;
+    max-height: 70vh;
+    overflow-y: scroll;
+}
 .result::-webkit-scrollbar{
     display: none;
 }
@@ -147,6 +152,25 @@
     align-items: start;
     gap: 25px;
     margin-bottom: 35px;
+}
+
+.history {
+    padding: 20px; /* Adjust padding as needed */
+    background-color: #f0f0f0; /* Background color for the history section */
+    border-radius: 10px; /* Add some border radius */
+    margin-bottom: 20px; /* Add some margin at the bottom */
+    max-height: 70vh; /* Set a max height for the history section */
+    overflow-y: scroll; /* Add a scroll bar */
+}
+.history::-webkit-scrollbar{
+    display: none;
+}
+
+.history p {
+    font-size: 18px; 
+    margin-bottom: 10px;
+    font-weight: 300;
+    line-height: 1.8;
 }
 
 .loader {
@@ -181,6 +205,11 @@
     line-height: 1.8;
 }
 
+.history .copy {
+    background-color: #f0f4f9;
+    width: 23px;
+    cursor: pointer;
+}
 @media (max-width: 600px) {
     .main-bottom input {
         width: 120px; /* Giảm chiều rộng của trường nhập liệu */

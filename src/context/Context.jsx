@@ -14,6 +14,7 @@ const ContextProvider = (props) => {
     const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
+    const [history, setHistory] = useState("");
 
     const onSent = async (prompt) => {
         setResultData("");
@@ -29,8 +30,10 @@ const ContextProvider = (props) => {
                 setRecentPrompt(input);
                 response = await runChat(input);
             }
-
+            // let htmlResponse = ""
             const htmlResponse = ReactDOMServer.renderToString(<Markdown>{response}</Markdown>);
+            
+            setHistory(htmlResponse);
 
             const words = htmlResponse.split(' ');
 
@@ -66,6 +69,8 @@ const ContextProvider = (props) => {
         resultData,
         input,
         setInput,
+        history,
+        setHistory
 
     }
 

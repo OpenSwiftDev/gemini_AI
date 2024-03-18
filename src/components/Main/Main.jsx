@@ -1,11 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import './Main.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/Context'
 import toast from 'react-hot-toast'
 const Main = () => {
+
+
     const sendPrompt = async () => {
-    
+
         if (input.trim() === '') {
             toast.error('Please enter a prompt', { duration: 3000 });
             return;
@@ -18,11 +20,45 @@ const Main = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-          sendPrompt();
+            sendPrompt();
         }
-      };
+    };
 
-    const { onSent, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
+    const { onSent, history, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
+    const [tempMessages, setTempMessages] = useState([]);
+    const [isNewMessageAdded, setIsNewMessageAdded] = useState(false);
+    useEffect(() => {
+        if (recentPrompt !== "" && history !== "") {
+            // Tạo một bản sao của lịch sử
+            const newtempMessages = [...tempMessages];
+
+            // Tìm xem prompt đã tồn tại trong lịch sử chưa
+            const existingMessageIndex = newtempMessages.findIndex(item => item.prompt === recentPrompt);
+
+            // Nếu prompt chưa tồn tại trong lịch sử, thêm tin nhắn mới vào đầu mảng
+            if (existingMessageIndex === -1) {
+                newtempMessages.unshift({ prompt: recentPrompt, response: history });
+            } else { // Nếu prompt đã tồn tại, cập nhật lại response
+                newtempMessages[existingMessageIndex].response = history;
+            }
+
+            const maxHistoryLength = 10;
+            if (newtempMessages.length > maxHistoryLength) {
+                newtempMessages.splice(maxHistoryLength); // Xóa các phần tử từ vị trí maxHistoryLength trở đi
+            }
+
+            setTempMessages(newtempMessages);
+        }
+    }, [recentPrompt, history]);
+
+    const handleCopy = (htmlText) => {
+        const plainText = htmlText.replace(/<[^>]+>/g, '');
+
+        navigator.clipboard.writeText(plainText);
+    
+        toast.success('Copied to clipboard', { duration: 3000 });
+    };
+    
 
     return (
         <div className='main'>
@@ -78,10 +114,29 @@ const Main = () => {
                         </div> :
                             <p dangerouslySetInnerHTML={{ __html: resultData }}></p>}
 
+                    </div>
+
+                    <div className='history'>
+                        <p>History Chat</p>
+                        {tempMessages.map((item, index) => (
+                            <div key={index}>
+                                <div className='result-title'>
+                                    <img src={assets.dev} alt="" />
+                                    <p> {item.prompt} </p>
+                                </div>
+                                <div className='result-data'>
+                                    <img src={assets.gemini_icon} alt="" />
+                                    <p dangerouslySetInnerHTML={{ __html: item.response }}></p>
+
+                                    <img onClick={() => handleCopy(item.response)} className='copy' src={assets.copy} alt="" />
+
+                                </div>
+
+                            </div>
+                        ))}
 
                     </div>
                 </div>}
-
 
 
                 <div className="main-bottom">
