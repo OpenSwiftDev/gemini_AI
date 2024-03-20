@@ -8,6 +8,7 @@ import { cards } from '../../utils/recommend_question'
 const Main = () => {
 
     const [model, setModel] = useState("gemini")
+
     const sendPrompt = async () => {
 
         if (input.trim() === '') {
@@ -28,6 +29,7 @@ const Main = () => {
 
     const { onSent, history, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
     const [tempMessages, setTempMessages] = useState([]);
+
     useEffect(() => {
         if (recentPrompt !== "" && history !== "") {
             setTempMessages(prevMessages => {
