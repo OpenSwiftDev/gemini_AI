@@ -21,6 +21,7 @@ const ContextProvider = (props) => {
         setResultData("");
         setLoading(true);
         setShowResult(true);
+        setRecentPrompt(prompt);
         let response;
         try {
             if (prompt !== undefined) {
@@ -29,8 +30,7 @@ const ContextProvider = (props) => {
                 }else if(model === "groq"){
                     response = await chatGroq(prompt)
                 }
-                
-                setRecentPrompt(prompt);
+                         
             } else {
                 setPrevPrompt(prev => [...prev, input]);
                 setRecentPrompt(input);
@@ -40,7 +40,6 @@ const ContextProvider = (props) => {
                     response = await chatGroq(input);
                 }
             }
-            // let htmlResponse = ""
             const htmlResponse = ReactDOMServer.renderToString(<Markdown>{response}</Markdown>);
             
             setHistory(htmlResponse);
