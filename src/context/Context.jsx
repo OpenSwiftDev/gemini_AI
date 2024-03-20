@@ -1,8 +1,9 @@
 import { createContext, useState, useEffect } from "react"
-import runChat from "../config/gemini";
 import toast from 'react-hot-toast';
 import Markdown from 'markdown-to-jsx';
 import ReactDOMServer from 'react-dom/server';
+import chatGemini from "../config/gemini";
+import {chatGroq} from "../config/groq.js";
 
 export const Context = createContext();
 
@@ -16,19 +17,28 @@ const ContextProvider = (props) => {
     const [resultData, setResultData] = useState("");
     const [history, setHistory] = useState("");
 
-    const onSent = async (prompt) => {
+    const onSent = async (prompt, model) => {
         setResultData("");
         setLoading(true);
         setShowResult(true);
         let response;
         try {
             if (prompt !== undefined) {
-                response = await runChat(prompt);
+                if(model === "gemini"){
+                    response = await chatGemini(prompt);
+                }else if(model === "groq"){
+                    response = await chatGroq(prompt)
+                }
+                
                 setRecentPrompt(prompt);
             } else {
                 setPrevPrompt(prev => [...prev, input]);
                 setRecentPrompt(input);
-                response = await runChat(input);
+                if(model === "gemini"){
+                    response = await chatGemini(input);
+                }else if(model === "groq"){
+                    response = await chatGroq(input);
+                }
             }
             // let htmlResponse = ""
             const htmlResponse = ReactDOMServer.renderToString(<Markdown>{response}</Markdown>);

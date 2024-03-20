@@ -3,9 +3,10 @@ import './Main.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/Context'
 import toast from 'react-hot-toast'
+import { capitalizeFirstLetter } from '../../utils/upper_first_letters'
 const Main = () => {
 
-
+    const [model, setModel] = useState("gemini")
     const sendPrompt = async () => {
 
         if (input.trim() === '') {
@@ -14,7 +15,7 @@ const Main = () => {
         }
         setInput('');
         toast.success('Prompt sent', { duration: 3000 });
-        await onSent();
+        await onSent(input, model);
 
     }
 
@@ -26,7 +27,6 @@ const Main = () => {
 
     const { onSent, history, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
     const [tempMessages, setTempMessages] = useState([]);
-    const [isNewMessageAdded, setIsNewMessageAdded] = useState(false);
     useEffect(() => {
         if (recentPrompt !== "" && history !== "") {
             // Tạo một bản sao của lịch sử
@@ -55,10 +55,16 @@ const Main = () => {
         const plainText = htmlText.replace(/<[^>]+>/g, '');
 
         navigator.clipboard.writeText(plainText);
-    
+
         toast.success('Copied to clipboard', { duration: 3000 });
     };
-    
+
+    const changeModel = (e) => {
+        const model = e.target.value
+        setModel(model)
+        toast.success(`Change ${capitalizeFirstLetter(model)} Model`, { duration: 3000 });
+    }
+
 
     return (
         <div className='main'>
@@ -140,7 +146,13 @@ const Main = () => {
 
 
                 <div className="main-bottom">
+                    <select className='select-model' value={model} onChange={changeModel}>
+                        <option value="gemini">Gemini</option>
+                        <option value="groq">Groq</option>
+                    </select>
+
                     <div className='search-box'>
+
 
                         <input onKeyDown={handleKeyDown} onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Enter a prompt here' />
                         <div>
