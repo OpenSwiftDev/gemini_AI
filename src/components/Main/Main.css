@@ -219,14 +219,6 @@
     border-radius: 10px;
     padding: 10px;
 }
-.select-model option {
-    background-color: #f0f0f0; /* Example background color */
-    color: #333; /* Example text color */
-    font-size: 14px; /* Example font size */
-    padding: 8px 12px; /* Example padding */
-    border: none; /* Example border */
-    cursor: pointer; /* Example cursor */
-}
 
 .select-model option:hover {
     background-color: #ccc; /* Example hover background color */
@@ -234,14 +226,6 @@
 }
 
 @media (max-width: 600px) {
-
-    .main-container {
-        padding: 0px 20px;
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
 
     .main-bottom input {
         width: 120px; /* Giảm chiều rộng của trường nhập liệu */
