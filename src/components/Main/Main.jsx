@@ -7,6 +7,7 @@ import { capitalizeFirstLetter } from '../../utils/upper_first_letters'
 const Main = () => {
 
     const [model, setModel] = useState("gemini")
+
     const sendPrompt = async () => {
 
         if (input.trim() === '') {
@@ -27,6 +28,7 @@ const Main = () => {
 
     const { onSent, history, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
     const [tempMessages, setTempMessages] = useState([]);
+
     useEffect(() => {
         if (recentPrompt !== "" && history !== "") {
             // Tạo một bản sao của lịch sử
@@ -44,7 +46,7 @@ const Main = () => {
 
             const maxHistoryLength = 10;
             if (newtempMessages.length > maxHistoryLength) {
-                newtempMessages.splice(maxHistoryLength); // Xóa các phần tử từ vị trí maxHistoryLength trở đi
+                newtempMessages.splice(maxHistoryLength); 
             }
 
             setTempMessages(newtempMessages);
@@ -64,7 +66,6 @@ const Main = () => {
         setModel(model)
         toast.success(`Change ${capitalizeFirstLetter(model)} Model`, { duration: 3000 });
     }
-
 
     return (
         <div className='main'>
