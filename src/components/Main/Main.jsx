@@ -31,13 +31,11 @@ const Main = () => {
 
     useEffect(() => {
         if (recentPrompt !== "" && history !== "") {
-            // Tạo một bản sao của lịch sử
+            
             const newtempMessages = [...tempMessages];
 
-            // Tìm xem prompt đã tồn tại trong lịch sử chưa
             const existingMessageIndex = newtempMessages.findIndex(item => item.prompt === recentPrompt);
 
-            // Nếu prompt chưa tồn tại trong lịch sử, thêm tin nhắn mới vào đầu mảng
             if (existingMessageIndex === -1) {
                 newtempMessages.unshift({ prompt: recentPrompt, response: history });
             } else { // Nếu prompt đã tồn tại, cập nhật lại response
