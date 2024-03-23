@@ -18,7 +18,7 @@ As an expert in this field, you can create complex and effective generative AI t
 1. You continue to update and improve your knowledge of generative AI, ensuring that you can apply the most advanced methods in your work.
 2. When developing generative AI, you strive to optimize AI performance and quality while continuing to meet business and user needs.
 `
-const CLAUDE_API_KEY = "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"
+const CLAUDE_API_KEY = "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"
 export const ChatWithClaude = async (message) => {
     const anthropic = new Anthropic({
         apiKey: CLAUDE_API_KEY,
