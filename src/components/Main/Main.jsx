@@ -8,7 +8,6 @@ import { cards } from '../../utils/recommend_question'
 const Main = () => {
 
     const [model, setModel] = useState("gemini")
-
     const sendPrompt = async () => {
 
         if (input.trim() === '') {
@@ -27,26 +26,26 @@ const Main = () => {
         }
     };
 
-    const { onSent, history, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
+    const { onSent, history, recentPrompt, showResult, loading, resultData, input, setInput, usedModel } = useContext(Context)
     const [tempMessages, setTempMessages] = useState([]);
 
     useEffect(() => {
         if (recentPrompt !== "" && history !== "") {
             setTempMessages(prevMessages => {
                 const existingMessageIndex = prevMessages.findIndex(item => item.prompt === recentPrompt);
-                const updatedMessages = [...prevMessages]; 
-    
+                const updatedMessages = [...prevMessages];
+
                 if (existingMessageIndex === -1) {
                     updatedMessages.unshift({ prompt: recentPrompt, response: history });
                 } else {
                     updatedMessages[existingMessageIndex].response = history;
                 }
-    
+
                 return updatedMessages;
             });
         }
     }, [recentPrompt, history]);
-    
+
 
     const handleCopy = (htmlText) => {
         const plainText = htmlText.replace(/<[^>]+>/g, '');
@@ -105,7 +104,6 @@ const Main = () => {
                             <hr />
                         </div> :
                             <p dangerouslySetInnerHTML={{ __html: resultData }}></p>}
-
                     </div>
 
                     <div className='history'>
@@ -121,7 +119,7 @@ const Main = () => {
                                     <p dangerouslySetInnerHTML={{ __html: item.response }}></p>
 
                                     <img onClick={() => handleCopy(item.response)} className='copy' src={assets.copy} alt="" />
-
+                                    {usedModel}
                                 </div>
 
                             </div>
@@ -135,6 +133,7 @@ const Main = () => {
                     <select className='select-model' value={model} onChange={changeModel}>
                         <option value="gemini">Gemini</option>
                         <option value="groq">Groq</option>
+                        <option value="claude">Claude</option>
                     </select>
 
                     <div className='search-box'>
