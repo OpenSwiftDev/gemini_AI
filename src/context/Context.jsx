@@ -3,8 +3,8 @@ import toast from 'react-hot-toast';
 import Markdown from 'markdown-to-jsx';
 import ReactDOMServer from 'react-dom/server';
 import chatGemini from "../config/gemini";
-import {chatGroq} from "../config/groq.js";
-
+import { chatGroq } from "../config/groq.js";
+import ChatWithClaude from "../config/claude.js";
 export const Context = createContext();
 
 const ContextProvider = (props) => {
@@ -17,6 +17,7 @@ const ContextProvider = (props) => {
     const [resultData, setResultData] = useState("");
     const [history, setHistory] = useState("");
 
+
     const onSent = async (prompt, model) => {
         setResultData("");
         setLoading(true);
@@ -25,23 +26,27 @@ const ContextProvider = (props) => {
         let response;
         try {
             if (prompt !== undefined) {
-                if(model === "gemini"){
+                if (model === "gemini") {
                     response = await chatGemini(prompt);
-                }else if(model === "groq"){
+                } else if (model === "groq") {
                     response = await chatGroq(prompt)
+                } else if (model === "claude") {
+                    response = await ChatWithClaude(prompt)
                 }
-                         
+
             } else {
                 setPrevPrompt(prev => [...prev, input]);
                 setRecentPrompt(input);
-                if(model === "gemini"){
+                if (model === "gemini") {
                     response = await chatGemini(input);
-                }else if(model === "groq"){
+                } else if (model === "groq") {
                     response = await chatGroq(input);
+                } else if (model === "claude") {
+                    response = await ChatWithClaude(prompt)
                 }
             }
             const htmlResponse = ReactDOMServer.renderToString(<Markdown>{response}</Markdown>);
-            
+
             setHistory(htmlResponse);
 
             const words = htmlResponse.split(' ');
@@ -79,7 +84,7 @@ const ContextProvider = (props) => {
         input,
         setInput,
         history,
-        setHistory
+        setHistory,
 
     }
 
