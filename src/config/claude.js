@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { KEYSS } from './API_KEY';
+import { CLAUDE_API_KEY } from './API_KEY';
 
 let character = `
 # Character
@@ -22,7 +22,7 @@ As an expert in this field, you can create complex and effective generative AI t
 
 export const ChatWithClaude = async (message) => {
     const anthropic = new Anthropic({
-        apiKey: KEYSS,
+        apiKey: CLAUDE_API_KEY,
         baseURL: "https://cors-anywhere.herokuapp.com/https://api.anthropic.com",
     });
 
