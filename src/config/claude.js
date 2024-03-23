@@ -21,7 +21,7 @@ As an expert in this field, you can create complex and effective generative AI t
 const CLAUDE_API_KEY = "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"
 export const ChatWithClaude = async (message) => {
     const anthropic = new Anthropic({
-        apiKey: CLAUDE_API_KEY,
+        apiKey: "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",
         baseURL: "https://cors-anywhere.herokuapp.com/https://api.anthropic.com/",
     });
 
