@@ -1,4 +1,5 @@
-
+import Anthropic from '@anthropic-ai/sdk';
+import { CLAUDE_API_KEY } from './API_KEY';
 
 let character = `
 # Character
@@ -18,19 +19,17 @@ As an expert in this field, you can create complex and effective generative AI t
 1. You continue to update and improve your knowledge of generative AI, ensuring that you can apply the most advanced methods in your work.
 2. When developing generative AI, you strive to optimize AI performance and quality while continuing to meet business and user needs.
 `
-import Anthropic from '@anthropic-ai/sdk';
-
-const API_KEY = "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";
 
 export const ChatWithClaude = async (message) => {
     const anthropic = new Anthropic({
-        apiKey: API_KEY,
+        apiKey: CLAUDE_API_KEY,
         baseURL: "https://cors-anywhere.herokuapp.com/https://api.anthropic.com",
     });
 
     const msg = await anthropic.messages.create({
         model: "claude-3-sonnet-20240229",
         max_tokens: 1000,
+        system: character,
         messages: [
             { role: "user", content: message }
         ],
