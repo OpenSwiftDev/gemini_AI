@@ -7,7 +7,6 @@ import cheerio from 'cheerio';
 import dotenv from 'dotenv';
 const GROQ_API_KEY = "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"
 const BRAVE_SEARCH_API_KEY = "BSACUaOUFOvBHRlsGqzW8Vx_VxjfFtX"
-const OPENAPI_KEY = "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"
 dotenv.config();
 
 export const ChatWithGroqInLangchain = async (message, returnSources = true,
